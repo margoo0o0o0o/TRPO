@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Личный кабинет</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Jura:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/eras-itc');
+    
+    body {
+      margin: 0;
+      font-family: 'Jura', sans-serif;
+      background-image: url('images/background.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      color: #333;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      border: 1px solid #000;
+      border-radius: 50%;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      z-index: 1000;
+    }
+
+    .back-button:hover {
+      background-color: #f0f0f0;
+    }
+
+    .back-button i {
+      color: #000;
+      font-size: 28px;
+    }
+
+    /* КНОПКА АДМИН-ПАНЕЛИ - КРАСНАЯ */
+    .admin-panel-link {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: none; /* Скрыта по умолчанию */
+    }
+
+    .admin-panel-link a {
+      background-color: #ff6b6b;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 0;
+      text-decoration: none;
+      font-family: 'Jura', sans-serif;
+      font-size: 16px;
+      border: 1px solid #000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s;
+    }
+
+    .admin-panel-link a:hover {
+      background-color: #ff5252;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .page-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #000;
+      font-family: 'Jura', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0 30px 0;
+    }
+
+    .title-image {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+    }
+
+    .container {
+      width: 96%;
+      max-width: 1400px;
+      background-color: #f0f0f0;
+      border-radius: 0;
+      padding: 30px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      margin-bottom: 30px;
+    }
+
+    .profile-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .photo-container {
+      width: 250px;
+      height: 250px;
+      background-color: white;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 40px;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .profile-photo {
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-data {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 250px;
+    }
+
+    .welcome-text {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .welcome-text h2 {
+      font-family: 'Jura', sans-serif;
+      font-size: 28px;
+      margin: 0 0 10px 0;
+      font-weight: 600;
+    }
+
+    .welcome-text p {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .data-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .data-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .data-label {
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 16px;
+    }
+
+    .data-field {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 0;
+      padding: 8px 12px;
+      font-size: 18px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .password-field {
+      letter-spacing: 3px;
+    }
+
+    .edit-btn {
+      background: none;
+      border: none;
+      color: #f8c8dc;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 16px;
+    }
+
+    /* ОСНОВНОЙ КОНТЕНТ */
+    .main-content-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 300px;
+    }
+
+    /* ПРОСТО ПУСТОЕ ПРОСТРАНСТВО */
+    .empty-space {
+      height: 50px;
+      width: 100%;
+    }
+
+    .menu-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+      width: 1300px;
+      margin: 0 auto;
+    }
+
+    .menu-button {
+      padding: 18px;
+      background-color: white;
+      border: 1px solid #000;
+      border-radius: 0;
+      font-size: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Jura', sans-serif;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      width: 100%;
+    }
+
+    .menu-button:hover {
+      background-color: #f8f8f8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-button.active {
+      background-color: #f8c8dc;
+      color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .section-title {
+      font-family: 'Jura', sans-serif;
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* КОНТЕНТНЫЕ ОБЛАСТИ (СКРЫТЫ ПО УМОЛЧАНИЮ) */
+    .content-area {
+      width: 100%;
+      display: none;
+    }
+
+    .content-area.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Новый стиль для белого прямоугольника в разделе записей */
+    .appointments-container {
+      background-color: white;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .appointments-intro {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 25px;
+    }
+
+    .appointment-card {
+      border: 1px solid #ddd;
+      border-radius: 0;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: #f0f0f0;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .appointment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .appointment-title {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .appointment-price {
+      font-size: 20px;
+      color: #333;
+    }
+
+    .appointment-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .appointment-date, .appointment-time {
+      font-size: 18px;
+    }
+
+    .cancel-option {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .cancel-text {
+      margin-right: 10px;
+      font-size: 18px;
+    }
+
+    .cancel-link {
+      color: #f8c8dc;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    /* Контейнер для кнопок */
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-top: 30px;
+      width: 220px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .book-button {
+      padding: 14px 20px;
+      background-color: #f8c8dc;
+      border: 1px solid #000;
+      border-radius: 0;
+      font-size: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      color: #333;
+      font-family: 'Jura', sans-serif;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      width: 100%;
+    }
+
+    .book-button:hover {
+      background-color: #f4a6c1;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Стили для отзывов */
+    .user-reviews-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .user-review-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 0;
+      padding: 20px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    .user-review-card h4 {
+      margin-top: 0;
+      color: #333;
+      font-family: 'Jura', sans-serif;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .user-review-card p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .review-rating {
+      color: #ffd700;
+      font-size: 18px;
+      letter-spacing: 3px;
+    }
+
+    /* Стили для формы редактирования */
+    .edit-form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 0;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .edit-form-group {
+      margin-bottom: 20px;
+    }
+
+    .edit-form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .edit-form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 0;
+      font-size: 16px;
+      font-family: 'Jura', sans-serif;
+    }
+
+    .save-btn {
+      background-color: #f8c8dc;
+      color: #000;
+      border: 1px solid #000;
+      padding: 12px 30px;
+      font-family: 'Jura', sans-serif;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 0;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .save-btn:hover {
+      background-color: #f4a6c1;
+    }
+
+    /* КНОПКА ВЫХОДА (ВСЕГДА ВИДНА) - КРАСНАЯ */
+    .logout-container {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    .logout-button {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-family: 'Jura', sans-serif;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background-color 0.3s ease;
+      width: 220px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .logout-button:hover {
+      background-color: #ff5252;
+    }
+
+    .logout-button i {
+      margin-right: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .profile-section {
+        flex-direction: column;
+      }
+      
+      .photo-container {
+        margin-right: 0;
+        margin-bottom: 20px;
+        align-self: center;
+      }
+      
+      .user-data {
+        height: auto;
+      }
+      
+      .data-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .menu-buttons {
+        width: 95%;
+      }
+      
+      .action-buttons {
+        width: 95%;
+      }
+      
+      .empty-space {
+        height: 30px;
+      }
+
+      .admin-panel-link {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin: 10px 0;
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Кнопка назад в левом верхнем углу -->
+  <a href="index.html" class="back-button">
+    <i class="fas fa-reply"></i> 
+  </a>
+
+  <!-- КНОПКА АДМИН-ПАНЕЛИ - КРАСНАЯ -->
+  <div id="adminPanelLink" class="admin-panel-link">
+    <a href="admin-panel.html">
+      <i class="fas fa-user-shield"></i> Админ-панель
+    </a>
+  </div>
+
+  <!-- Заголовок вверху -->
+  <div class="page-title">
+    <img src="images/8.png" alt="Иконка" class="title-image">
+    Личный кабинет
+  </div>
+
+  <!-- Серый прямоугольник (96% ширины) -->
+  <div class="container">
+    <!-- Верхняя часть с фото и данными пользователя -->
+    <div class="profile-section">
+      <!-- Фотография в левом верхнем углу -->
+      <div class="photo-container">
+        <img src="images/profile-photo.jpg" alt="Фото профиля" class="profile-photo" id="profilePhoto">
+      </div>
+      
+      <!-- Данные пользователя справа -->
+      <div class="user-data">
+        <div class="welcome-text">
+          <h2 id="welcomeName">Добро пожаловать,</h2>
+          <p id="userRoleText">Ваши данные:</p>
+        </div>
+        
+        <div class="data-container">
+          <div class="data-group">
+            <div class="data-label">Имя</div>
+            <div class="data-field" id="firstNameField">
+              <span id="firstNameText"></span>
+              <button class="edit-btn" data-field="firstName">
+                <i class="fas fa-edit"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="data-group">
+            <div class="data-label">Фамилия</div>
+            <div class="data-field" id="lastNameField">
+              <span id="lastNameText"></span>
+              <button class="edit-btn" data-field="lastName">
+                <i class="fas fa-edit"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="data-group">
+            <div class="data-label">Телефон</div>
+            <div class="data-field" id="phoneField">
+              <span id="phoneText"></span>
+              <button class="edit-btn" data-field="phone">
+                <i class="fas fa-edit"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="data-group">
+            <div class="data-label">Пароль</div>
+            <div class="data-field password-field" id="passwordField">
+              <span id="passwordText">******</span>
+              <button class="edit-btn" data-field="password">
+                <i class="fas fa-edit"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Основная часть с меню и контентом -->
+    <div class="main-content-section">
+      <!-- Кнопки меню ДЛЯ ОБЫЧНЫХ ПОЛЬЗОВАТЕЛЕЙ (БЕЛЫЕ) -->
+      <div class="menu-buttons" id="userMenuButtons">
+        <div class="menu-button" data-target="appointments">Мои записи</div>
+        <div class="menu-button" data-target="reviews">Мои отзывы</div>
+        <div class="menu-button" data-target="edit">Изменить данные</div>
+      </div>
+
+      <!-- Кнопки меню ДЛЯ АДМИНОВ (ТОЖЕ БЕЛЫЕ) -->
+      <div class="menu-buttons" id="adminMenuButtons" style="display: none;">
+        <div class="menu-button" data-target="appointments">Все записи</div>
+        <div class="menu-button" data-target="reviews">Все отзывы</div>
+        <div class="menu-button" data-target="edit">Изменить данные</div>
+        <div class="menu-button" data-target="statistics">Статистика</div>
+      </div>
+
+      <!-- ПУСТОЕ ПРОСТРАНСТВО после кнопок -->
+      <div class="empty-space"></div>
+
+      <!-- Секция с записями (СКРЫТА ПО УМОЛЧАНИЮ) -->
+      <div class="content-area" id="appointments">
+        <div class="appointments-container">
+          <p class="appointments-intro" id="appointmentsIntro">Вы записаны на следующие процедуры:</p>
+          
+          <!-- Здесь будут записи пользователя или все записи для админа -->
+          <div id="appointmentsList">
+            <!-- Данные будут загружены через JavaScript -->
+          </div>
+        </div>
+
+        <!-- Контейнер для кнопки "Записаться" (только для пользователей) -->
+        <div class="action-buttons" id="userBookButton">
+          <a href="katalog.html" class="book-button" id="bookButton">Записаться на новую процедуру</a>
+        </div>
+      </div>
+
+      <!-- Секция с отзывами (СКРЫТА ПО УМОЛЧАНИЮ) -->
+      <div class="content-area" id="reviews">
+        <h2 class="section-title" id="reviewsTitle">Мои отзывы</h2>
+        <div id="reviewsContent" class="appointments-container">
+          <p>Загрузка отзывов...</p>
+        </div>
+      </div>
+
+      <!-- Секция изменения данных (СКРЫТА ПО УМОЛЧАНИЮ) -->
+      <div class="content-area" id="edit">
+        <h2 class="section-title">Изменение данных</h2>
+        <div class="appointments-container">
+          <form id="editForm" class="edit-form">
+            <div class="edit-form-group">
+              <label for="editFirstName">Имя:</label>
+              <input type="text" id="editFirstName" name="firstName" required>
+            </div>
+            
+            <div class="edit-form-group">
+              <label for="editLastName">Фамилия:</label>
+              <input type="text" id="editLastName" name="lastName" required>
+            </div>
+            
+            <div class="edit-form-group">
+              <label for="editPhone">Телефон:</label>
+              <input type="tel" id="editPhone" name="phone" required>
+            </div>
+            
+            <div class="edit-form-group">
+              <label for="editPassword">Новый пароль (оставьте пустым, если не хотите менять):</label>
+              <input type="password" id="editPassword" name="password">
+            </div>
+            
+            <div class="edit-form-group">
+              <label for="confirmPassword">Подтвердите пароль:</label>
+              <input type="password" id="confirmPassword" name="confirmPassword">
+            </div>
+            
+            <button type="submit" class="save-btn">Сохранить изменения</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Секция статистики (ТОЛЬКО ДЛЯ АДМИНОВ) -->
+      <div class="content-area" id="statistics">
+        <h2 class="section-title">Статистика сайта</h2>
+        <div class="appointments-container">
+          <div id="statsContent">
+            <p>Загрузка статистики...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Кнопка выхода (ВСЕГДА ВИДНА) - КРАСНАЯ -->
+    <div class="logout-container">
+      <button id="logoutButton" class="logout-button">
+        <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ============ ГЛОБАЛЬНЫЕ ФУНКЦИИ ============
+
+    // Получение текущего пользователя
+    function getCurrentUser() {
+      const userJson = localStorage.getItem('currentUser');
+      return userJson ? JSON.parse(userJson) : null;
+    }
+
+    // Получение всех пользователей
+    function getUsers() {
+      const usersJson = localStorage.getItem('beautySalonUsers');
+      return usersJson ? JSON.parse(usersJson) : [];
+    }
+
+    // Обновление пользователя
+    function updateUser(updatedUser) {
+      const users = getUsers();
+      const userIndex = users.findIndex(u => u.id === updatedUser.id);
+      if (userIndex !== -1) {
+        users[userIndex] = updatedUser;
+        localStorage.setItem('beautySalonUsers', JSON.stringify(users));
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+        return true;
+      }
+      return false;
+    }
+
+    // Получение всех отзывов
+    function getAllReviews() {
+      const reviewsJson = localStorage.getItem('beautySalonAllReviews');
+      if (reviewsJson) {
+        return JSON.parse(reviewsJson);
+      } else {
+        // Если нет отзывов, создаем пустую структуру
+        return {
+          'Ресницы': [],
+          'Брови': [],
+          'Скайсы': []
+        };
+      }
+    }
+
+    // Получение всех записей
+    function getAllAppointments() {
+      const appointmentsJson = localStorage.getItem('beautySalonAppointments');
+      return appointmentsJson ? JSON.parse(appointmentsJson) : [];
+    }
+
+    // Обновление записи
+    function updateAppointment(updatedAppointment) {
+      const appointments = getAllAppointments();
+      const appointmentIndex = appointments.findIndex(a => a.id === updatedAppointment.id);
+      if (appointmentIndex !== -1) {
+        appointments[appointmentIndex] = updatedAppointment;
+        localStorage.setItem('beautySalonAppointments', JSON.stringify(appointments));
+        return true;
+      }
+      return false;
+    }
+
+    // Удаление записи
+    function deleteAppointment(appointmentId) {
+      const appointments = getAllAppointments();
+      const updatedAppointments = appointments.filter(a => a.id !== appointmentId);
+      localStorage.setItem('beautySalonAppointments', JSON.stringify(updatedAppointments));
+      return true;
+    }
+
+    // ============ ЗАГРУЗКА ДАННЫХ ПОЛЬЗОВАТЕЛЯ ============
+
+    function loadUserData() {
+      const currentUser = getCurrentUser();
+      
+      if (!currentUser) {
+        // Если пользователь не авторизован, перенаправляем на страницу входа
+        alert('Пожалуйста, войдите в систему!');
+        window.location.href = 'registracii.html';
+        return false;
+      }
+      
+      console.log('Загружаем данные пользователя:', currentUser);
+      
+      // Заполняем данные пользователя на странице
+      document.getElementById('firstNameText').textContent = currentUser.firstName || 'Не указано';
+      document.getElementById('lastNameText').textContent = currentUser.lastName || 'Не указано';
+      document.getElementById('phoneText').textContent = currentUser.phone || 'Не указано';
+      document.getElementById('welcomeName').textContent = `Добро пожаловать, ${currentUser.firstName}`;
+      
+      // Показываем роль пользователя
+      const roleText = currentUser.role === 'admin' ? 'Администратор' : 'Пользователь';
+      document.getElementById('userRoleText').textContent = `Роль: ${roleText}`;
+      
+      // ===== Разные меню для админов и пользователей =====
+      if (currentUser.role === 'admin') {
+        console.log('Пользователь - админ, показываем админское меню');
+        // Показываем админское меню
+        document.getElementById('userMenuButtons').style.display = 'none';
+        document.getElementById('adminMenuButtons').style.display = 'flex';
+        document.getElementById('adminPanelLink').style.display = 'block';
+        document.getElementById('userBookButton').style.display = 'none'; // Скрываем кнопку записи для админа
+      } else {
+        console.log('Пользователь - обычный пользователь, показываем обычное меню');
+        // Показываем обычное меню
+        document.getElementById('userMenuButtons').style.display = 'flex';
+        document.getElementById('adminMenuButtons').style.display = 'none';
+        document.getElementById('adminPanelLink').style.display = 'none';
+        document.getElementById('userBookButton').style.display = 'flex';
+      }
+      // ===== КОНЕЦ ДОБАВЛЕННОГО КОДА =====
+      
+      // Заполняем форму редактирования
+      document.getElementById('editFirstName').value = currentUser.firstName || '';
+      document.getElementById('editLastName').value = currentUser.lastName || '';
+      document.getElementById('editPhone').value = currentUser.phone || '';
+      
+      // Загружаем фото профиля, если есть
+      if (currentUser.photo) {
+        document.getElementById('profilePhoto').src = currentUser.photo;
+      }
+      
+      return currentUser;
+    }
+
+    // ============ ЗАГРУЗКА ЗАПИСЕЙ ============
+
+    function loadAppointments() {
+      const currentUser = getCurrentUser();
+      const isAdmin = currentUser.role === 'admin';
+      const appointments = getAllAppointments();
+      const users = getUsers();
+      
+      console.log('Загружаем записи. Всего записей:', appointments.length);
+      console.log('Текущий пользователь:', currentUser);
+      
+      let appointmentsHTML = '';
+      
+      if (isAdmin) {
+        // Для админа: показываем ВСЕ записи
+        document.getElementById('appointmentsIntro').textContent = 'Все записи клиентов:';
+        
+        if (appointments.length === 0) {
+          appointmentsHTML = '<div class="appointment-card"><p>Нет записей на процедуры</p></div>';
+        } else {
+          // Сортируем по дате (сначала новые)
+          const sortedAppointments = [...appointments].sort((a, b) => 
+            new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          
+          sortedAppointments.forEach(appointment => {
+            const user = users.find(u => u.id === appointment.userId);
+            const userName = user ? `${user.firstName} ${user.lastName}` : 'Неизвестный пользователь';
+            const status = appointment.status === 'active' ? 'Активна' : 'Отменена';
+            const statusClass = appointment.status === 'active' ? '' : 'style="opacity: 0.6;"';
+            
+            // Форматируем дату для отображения
+            let displayDate = appointment.date;
+            try {
+              if (typeof appointment.date === 'string' && !appointment.date.includes('г.')) {
+                const dateObj = new Date(appointment.date);
+                if (!isNaN(dateObj.getTime())) {
+                  displayDate = dateObj.toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  });
+                }
+              }
+            } catch (e) {
+              console.log('Ошибка форматирования даты:', e);
+            }
+            
+            appointmentsHTML += `
+              <div class="appointment-card" ${statusClass}>
+                <div class="appointment-header">
+                  <div class="appointment-title">${appointment.service}</div>
+                  <div class="appointment-price">${appointment.price}</div>
+                </div>
+                <div class="appointment-details">
+                  <div class="appointment-date">Дата: ${displayDate}</div>
+                  <div class="appointment-time">Время: ${appointment.time}</div>
+                </div>
+                <div class="appointment-details">
+                  <div>Клиент: ${userName}</div>
+                  <div>Телефон: ${appointment.userPhone}</div>
+                </div>
+                <div class="appointment-details">
+                  <div>Статус: ${status}</div>
+                  ${appointment.comment ? `<div>Комментарий: ${appointment.comment}</div>` : ''}
+                </div>
+                ${appointment.status === 'active' ? `
+                  <div class="cancel-option">
+                    <span class="cancel-text">ID записи: ${appointment.id}</span>
+                    <span class="cancel-link" onclick="adminCancelAppointment(${appointment.id})">Отменить</span>
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          });
+        }
+      } else {
+        // Для обычного пользователя: показываем ТОЛЬКО его записи
+        document.getElementById('appointmentsIntro').textContent = 'Вы записаны на следующие процедуры:';
+        
+        const userAppointments = appointments
+          .filter(a => a.userId === currentUser.id && a.status === 'active')
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        console.log('Записи пользователя:', userAppointments);
+        
+        if (userAppointments.length === 0) {
+          appointmentsHTML = `
+            <div class="appointment-card">
+              <p>У вас нет активных записей. Нажмите "Записаться на новую процедуру", чтобы создать запись.</p>
+            </div>
+          `;
+        } else {
+          userAppointments.forEach(appointment => {
+            // Форматируем дату для отображения
+            let displayDate = appointment.date;
+            try {
+              if (typeof appointment.date === 'string' && !appointment.date.includes('г.')) {
+                const dateObj = new Date(appointment.date);
+                if (!isNaN(dateObj.getTime())) {
+                  displayDate = dateObj.toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  });
+                }
+              }
+            } catch (e) {
+              console.log('Ошибка форматирования даты:', e);
+            }
+            
+            appointmentsHTML += `
+              <div class="appointment-card" id="appointment${appointment.id}">
+                <div class="appointment-header">
+                  <div class="appointment-title">${appointment.service}</div>
+                  <div class="appointment-price">${appointment.price}</div>
+                </div>
+                <div class="appointment-details">
+                  <div class="appointment-date">Дата: ${displayDate}</div>
+                  <div class="appointment-time">Время: ${appointment.time}</div>
+                </div>
+                ${appointment.comment ? `
+                  <div class="appointment-details">
+                    <div>Комментарий: ${appointment.comment}</div>
+                  </div>
+                ` : ''}
+                <div class="cancel-option">
+                  <span class="cancel-text">Желаете отменить запись? 💬️</span>
+                  <span class="cancel-link" onclick="userCancelAppointment(${appointment.id})">Да</span>
+                </div>
+              </div>
+            `;
+          });
+        }
+      }
+      
+      document.getElementById('appointmentsList').innerHTML = appointmentsHTML;
+    }
+
+    // ============ ЗАГРУЗКА ОТЗЫВОВ ============
+
+    function loadReviews() {
+      const currentUser = getCurrentUser();
+      const isAdmin = currentUser.role === 'admin';
+      const reviews = getAllReviews();
+      const users = getUsers();
+      
+      console.log('Загружаем отзывы. Все отзывы:', reviews);
+      
+      let reviewsHTML = '';
+      
+      if (isAdmin) {
+        // Для админа: показываем ВСЕ отзывы
+        document.getElementById('reviewsTitle').textContent = 'Все отзывы';
+        
+        let allReviews = [];
+        Object.keys(reviews).forEach(category => {
+          if (reviews[category] && Array.isArray(reviews[category])) {
+            reviews[category].forEach(review => {
+              allReviews.push({
+                ...review,
+                category: category
+              });
+            });
+          }
+        });
+        
+        console.log('Все отзывы для админа:', allReviews);
+        
+        if (allReviews.length === 0) {
+          reviewsHTML = '<p>Нет отзывов</p>';
+        } else {
+          allReviews.forEach(review => {
+            const user = users.find(u => u.id === review.userId);
+            const userName = user ? `${user.firstName} ${user.lastName}` : 'Аноним';
+            const stars = '★'.repeat(review.rating || 5) + '☆'.repeat(5 - (review.rating || 5));
+            
+            reviewsHTML += `
+              <div class="user-review-card">
+                <h4>${review.category} - ${userName} (${review.date || 'Не указана'})</h4>
+                <p><strong>Оценка:</strong> <span class="review-rating">${stars}</span> (${review.rating || 5}/5)</p>
+                <p>${review.text || 'Нет текста'}</p>
+                <div style="text-align: right; margin-top: 10px;">
+                  <button class="btn-small" onclick="deleteReviewAsAdmin('${review.category}', ${review.id})" style="background: #f8c8dc; color: #000; padding: 5px 10px; border: 1px solid #000; cursor: pointer; border-radius: 0;">
+                    Удалить
+                  </button>
+                </div>
+              </div>
+            `;
+          });
+        }
+      } else {
+        // Для обычного пользователя: показываем ТОЛЬКО его отзывы
+        document.getElementById('reviewsTitle').textContent = 'Мои отзывы';
+        
+        const userReviews = [];
+        Object.keys(reviews).forEach(category => {
+          if (reviews[category] && Array.isArray(reviews[category])) {
+            reviews[category].forEach(review => {
+              if (review.userId === currentUser.id) {
+                userReviews.push({
+                  ...review,
+                  category: category
+                });
+              }
+            });
+          }
+        });
+        
+        console.log('Отзывы пользователя:', userReviews);
+        
+        if (userReviews.length === 0) {
+          reviewsHTML = '<p>У вас пока нет оставленных отзывов.</p>';
+        } else {
+          userReviews.forEach(review => {
+            const stars = '★'.repeat(review.rating || 5) + '☆'.repeat(5 - (review.rating || 5));
+            reviewsHTML += `
+              <div class="user-review-card">
+                <h4>${review.category} (${review.date || 'Не указана'})</h4>
+                <p><strong>Оценка:</strong> <span class="review-rating">${stars}</span> (${review.rating || 5}/5)</p>
+                <p>${review.text || 'Нет текста'}</p>
+              </div>
+            `;
+          });
+        }
+      }
+      
+      document.getElementById('reviewsContent').innerHTML = reviewsHTML;
+    }
+
+    // ============ ЗАГРУЗКА СТАТИСТИКИ (ТОЛЬКО ДЛЯ АДМИНОВ) ============
+
+    function loadStatistics() {
+      const users = getUsers();
+      const appointments = getAllAppointments();
+      const reviews = getAllReviews();
+      
+      // Считаем статистику
+      const totalUsers = users.length;
+      const activeUsers = users.filter(u => !u.blocked).length;
+      const adminsCount = users.filter(u => u.role === 'admin').length;
+      
+      // Считаем общее количество отзывов
+      let totalReviews = 0;
+      Object.values(reviews).forEach(category => {
+        if (Array.isArray(category)) {
+          totalReviews += category.length;
+        }
+      });
+      
+      // Активные записи
+      const activeAppointments = appointments.filter(a => a.status === 'active').length;
+      
+      // Сегодняшняя дата
+      const today = new Date().toLocaleDateString('ru-RU');
+      
+      // Записи на сегодня
+      const todayAppointments = appointments.filter(a => {
+        try {
+          if (typeof a.date === 'string') {
+            return a.date.includes(today.split('.')[0]) && a.status === 'active';
+          }
+        } catch (e) {}
+        return false;
+      }).length;
+      
+      const statsHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+          <div style="background: #f8c8dc; padding: 20px; text-align: center;">
+            <h3>👥 Пользователи</h3>
+            <p style="font-size: 36px; font-weight: bold;">${totalUsers}</p>
+            <p>Активных: ${activeUsers}</p>
+          </div>
+          
+          <div style="background: #f8c8dc; padding: 20px; text-align: center;">
+            <h3>📅 Записи</h3>
+            <p style="font-size: 36px; font-weight: bold;">${activeAppointments}</p>
+            <p>На сегодня: ${todayAppointments}</p>
+          </div>
+          
+          <div style="background: #f8c8dc; padding: 20px; text-align: center;">
+            <h3>⭐ Отзывы</h3>
+            <p style="font-size: 36px; font-weight: bold;">${totalReviews}</p>
+            <p>Всего отзывов</p>
+          </div>
+          
+          <div style="background: #f8c8dc; padding: 20px; text-align: center;">
+            <h3>👑 Админы</h3>
+            <p style="font-size: 36px; font-weight: bold;">${adminsCount}</p>
+            <p>Онлайн: 1</p>
+          </div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+          <h3>Последние действия</h3>
+          <ul>
+            <li>Новый пользователь: ${users.length > 0 ? users[users.length - 1].firstName : 'нет'}</li>
+            <li>Последняя запись: ${appointments.length > 0 ? appointments[appointments.length - 1].service : 'нет'}</li>
+            <li>Последний отзыв: ${totalReviews > 0 ? 'добавлен' : 'нет'}</li>
+          </ul>
+        </div>
+      `;
+      
+      document.getElementById('statsContent').innerHTML = statsHTML;
+    }
+
+    // ============ ФУНКЦИИ ДЛЯ АДМИНОВ ============
+
+    function adminCancelAppointment(appointmentId) {
+      if (confirm('Вы уверены, что хотите отменить эту запись от имени администратора?')) {
+        const appointments = getAllAppointments();
+        const appointmentIndex = appointments.findIndex(a => a.id === appointmentId);
+        
+        if (appointmentIndex !== -1) {
+          appointments[appointmentIndex].status = 'cancelled';
+          localStorage.setItem('beautySalonAppointments', JSON.stringify(appointments));
+          loadAppointments();
+          alert('Запись отменена администратором!');
+        }
+      }
+    }
+
+    function deleteReviewAsAdmin(category, reviewId) {
+      if (confirm('Удалить этот отзыв?')) {
+        const reviews = getAllReviews();
+        if (reviews[category] && Array.isArray(reviews[category])) {
+          reviews[category] = reviews[category].filter(review => review.id !== reviewId);
+          localStorage.setItem('beautySalonAllReviews', JSON.stringify(reviews));
+          loadReviews();
+          alert('Отзыв удален!');
+        }
+      }
+    }
+
+    // ============ ФУНКЦИИ ДЛЯ ПОЛЬЗОВАТЕЛЕЙ ============
+
+    function userCancelAppointment(appointmentId) {
+      if (confirm('Вы действительно хотите отменить эту запись?')) {
+        const appointments = getAllAppointments();
+        const appointmentIndex = appointments.findIndex(a => a.id === appointmentId);
+        
+        if (appointmentIndex !== -1 && appointments[appointmentIndex].userId === getCurrentUser().id) {
+          appointments[appointmentIndex].status = 'cancelled';
+          localStorage.setItem('beautySalonAppointments', JSON.stringify(appointments));
+          loadAppointments();
+          alert('Запись успешно отменена!');
+        } else {
+          alert('Ошибка: запись не найдена или вы не можете её отменить!');
+        }
+      }
+    }
+
+    // ============ РЕДАКТИРОВАНИЕ ДАННЫХ В РЕЖИМЕ РЕАЛЬНОГО ВРЕМЕНИ ============
+
+    function setupInlineEditing() {
+      const editButtons = document.querySelectorAll('.edit-btn');
+      
+      editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const field = this.getAttribute('data-field');
+          const fieldElement = document.getElementById(`${field}Field`);
+          const textElement = document.getElementById(`${field}Text`);
+          const currentValue = textElement.textContent;
+          
+          // Если поле "Пароль", показываем специальную форму
+          if (field === 'password') {
+            const newPassword = prompt('Введите новый пароль:');
+            if (newPassword && newPassword.length >= 6) {
+              const confirmPassword = prompt('Подтвердите пароль:');
+              if (newPassword === confirmPassword) {
+                const currentUser = getCurrentUser();
+                currentUser.password = newPassword;
+                if (updateUser(currentUser)) {
+                  alert('Пароль успешно изменен!');
+                }
+              } else {
+                alert('Пароли не совпадают!');
+              }
+            } else if (newPassword) {
+              alert('Пароль должен содержать не менее 6 символов!');
+            }
+            return;
+          }
+          
+          // Для обычных полей
+          let newValue;
+          if (field === 'phone') {
+            newValue = prompt('Введите новый номер телефона:', currentValue);
+          } else {
+            newValue = prompt(`Введите новое значение для ${field === 'firstName' ? 'имени' : 'фамилии'}:`, currentValue);
+          }
+          
+          if (newValue && newValue.trim() !== '') {
+            // Обновляем отображение
+            textElement.textContent = newValue.trim();
+            
+            // Обновляем данные в LocalStorage
+            const currentUser = getCurrentUser();
+            if (field === 'firstName') {
+              currentUser.firstName = newValue.trim();
+              document.getElementById('welcomeName').textContent = `Добро пожаловать, ${newValue.trim()}`;
+            } else if (field === 'lastName') {
+              currentUser.lastName = newValue.trim();
+            } else if (field === 'phone') {
+              currentUser.phone = newValue.trim();
+            }
+            
+            if (updateUser(currentUser)) {
+              // Обновляем форму редактирования
+              document.getElementById('editFirstName').value = currentUser.firstName || '';
+              document.getElementById('editLastName').value = currentUser.lastName || '';
+              document.getElementById('editPhone').value = currentUser.phone || '';
+            }
+          }
+        });
+      });
+    }
+
+    // ============ ФОРМА РЕДАКТИРОВАНИЯ ДАННЫХ ============
+
+    function setupEditForm() {
+      const editForm = document.getElementById('editForm');
+      
+      editForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
+          alert('Ошибка: пользователь не найден!');
+          return;
+        }
+        
+        const firstName = document.getElementById('editFirstName').value.trim();
+        const lastName = document.getElementById('editLastName').value.trim();
+        const phone = document.getElementById('editPhone').value.trim();
+        const newPassword = document.getElementById('editPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        // Валидация
+        if (!firstName || !lastName || !phone) {
+          alert('Пожалуйста, заполните все обязательные поля!');
+          return;
+        }
+        
+        // Проверка пароля
+        if (newPassword) {
+          if (newPassword.length < 6) {
+            alert('Пароль должен содержать не менее 6 символов!');
+            return;
+          }
+          if (newPassword !== confirmPassword) {
+            alert('Пароли не совпадают!');
+            return;
+          }
+          currentUser.password = newPassword;
+        }
+        
+        // Обновляем данные пользователя
+        currentUser.firstName = firstName;
+        currentUser.lastName = lastName;
+        currentUser.phone = phone;
+        
+        if (updateUser(currentUser)) {
+          // Обновляем отображение
+          document.getElementById('firstNameText').textContent = firstName;
+          document.getElementById('lastNameText').textContent = lastName;
+          document.getElementById('phoneText').textContent = phone;
+          document.getElementById('welcomeName').textContent = `Добро пожаловать, ${firstName}`;
+          
+          alert('Данные успешно обновлены!');
+          
+          // Очищаем поля пароля
+          document.getElementById('editPassword').value = '';
+          document.getElementById('confirmPassword').value = '';
+        } else {
+          alert('Ошибка при сохранении данных!');
+        }
+      });
+    }
+
+    // ============ КНОПКА ВЫХОДА ============
+
+    function setupLogout() {
+      document.getElementById('logoutButton').addEventListener('click', function() {
+        if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+          // Удаляем текущего пользователя из LocalStorage
+          localStorage.removeItem('currentUser');
+          
+          // Перенаправляем на главную страницу
+          window.location.href = 'index.html';
+        }
+      });
+    }
+
+    // ============ ПЕРЕКЛЮЧЕНИЕ МЕЖДУ ВКЛАДКАМИ ============
+
+    function setupTabSwitching() {
+      const menuButtons = document.querySelectorAll('.menu-button');
+      
+      // Назначаем обработчики на кнопки меню
+      menuButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const targetId = this.getAttribute('data-target');
+          switchToTab(targetId, this);
+        });
+      });
+    }
+
+    function switchToTab(tabId, clickedButton) {
+      console.log('Переключаемся на вкладку:', tabId);
+      
+      // Скрываем все контентные области
+      document.querySelectorAll('.content-area').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Убираем активный класс у всех кнопок
+      document.querySelectorAll('.menu-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Показываем целевую вкладку
+      const targetSection = document.getElementById(tabId);
+      if (targetSection) {
+        targetSection.classList.add('active');
+      }
+      
+      // Добавляем активный класс к текущей кнопке
+      if (clickedButton) {
+        clickedButton.classList.add('active');
+      }
+      
+      // Загружаем данные для выбранной вкладки
+      switch(tabId) {
+        case 'appointments':
+          console.log('Загружаем записи...');
+          loadAppointments();
+          break;
+        case 'reviews':
+          console.log('Загружаем отзывы...');
+          loadReviews();
+          break;
+        case 'statistics':
+          console.log('Загружаем статистику...');
+          loadStatistics();
+          break;
+      }
+    }
+
+    // ============ ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ ============
+
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('=== Начало загрузки личного кабинета ===');
+      
+      // Загружаем данные пользователя
+      const currentUser = loadUserData();
+      
+      if (currentUser) {
+        console.log('Пользователь загружен успешно:', currentUser.firstName);
+        
+        // Настраиваем все функции
+        setupInlineEditing();
+        setupEditForm();
+        setupLogout();
+        setupTabSwitching();
+        
+        // По умолчанию показываем вкладку "Мои записи" для пользователей
+        // и "Все записи" для админов
+        if (currentUser.role === 'admin') {
+          const adminAppointmentsButton = document.querySelector('#adminMenuButtons .menu-button[data-target="appointments"]');
+          if (adminAppointmentsButton) {
+            adminAppointmentsButton.click();
+          }
+        } else {
+          const userAppointmentsButton = document.querySelector('#userMenuButtons .menu-button[data-target="appointments"]');
+          if (userAppointmentsButton) {
+            userAppointmentsButton.click();
+          }
+        }
+        
+        console.log('=== Личный кабинет успешно загружен ===');
+      } else {
+        console.log('=== Ошибка загрузки пользователя ===');
+      }
+    });
+  </script>
+</body>
+</html>

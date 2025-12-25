@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Регистрация и Вход</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Jura:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background-image: url('images/background.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 10px; 
+      position: relative;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      border: 1px solid #000;
+      border-radius: 50%;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .back-button:hover {
+      background-color: #f0f0f0;
+    }
+
+    .back-button i {
+      color: #000;
+      font-size: 28px;
+      cursor: inherit;
+      user-select: none;
+    }
+
+    .block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 550px;
+      gap: 20px;
+      margin-top: 10px; 
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: 42px;
+      color: #000;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 15px;
+    }
+
+    .field-container {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .icon {
+      position: absolute;
+      left: -45px;
+      z-index: 1;
+      pointer-events: none;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon i {
+      color: #000;
+      font-size: 20px;
+    }
+
+    .icon-phone {
+      border: 1px solid #000;
+      border-radius: 50%;
+    }
+
+    .icon-key i {
+      font-size: 22px;
+    }
+
+    input, select {
+      padding: 16px 18px;
+      font-size: 18px;
+      border: 1px solid #000;
+      border-radius: 6px;
+      background-color: #fff;
+      color: #333;
+      width: 100%;
+      box-sizing: border-box;
+      height: 55px;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    input::placeholder {
+      color: #666;
+      font-size: 18px;
+    }
+
+    .btn {
+      padding: 16px 18px;
+      font-size: 18px;
+      border: 1px solid #000;
+      border-radius: 6px;
+      background-color: #f8c8dc;
+      color: #333;
+      width: 100%;
+      box-sizing: border-box;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      height: 55px;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .btn:hover {
+      background-color: #f4a6c1;
+    }
+
+    .switch {
+      text-align: center;
+      font-size: 18px;
+      color: #000;
+      font-family: 'Jura', sans-serif;
+      margin-top: 5px;
+    }
+
+    .switch a {
+      color: #000;
+      text-decoration: none;
+      font-weight: normal;
+      font-family: 'Jura', sans-serif;
+      cursor: pointer;
+    }
+
+    .switch a:hover {
+      text-decoration: none;
+      background-color: transparent;
+      color: #000;
+    }
+
+    /* Стили для сообщений */
+    .message {
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      font-family: 'Jura', sans-serif;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .admin-note {
+      background-color: #fff3cd;
+      border: 1px solid #ffeaa7;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #856404;
+    }
+
+    /* Стили для настроек админа */
+    .admin-setup {
+      background-color: #e3f2fd;
+      border: 1px solid #bbdefb;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .admin-setup h3 {
+      margin-top: 0;
+      color: #1565c0;
+      font-size: 18px;
+    }
+
+    .admin-setup p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .setup-btn {
+      background-color: #1565c0;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .setup-btn:hover {
+      background-color: #0d47a1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Кнопка назад с переходом на index.html -->
+  <a href="index.html" class="back-button">
+    <i class="fas fa-reply"></i> 
+  </a>
+
+  <!-- Блок регистрации (показывается по умолчанию) -->
+  <div class="block" id="registerBlock">
+    <h2>Регистрация</h2>
+    <div id="registerMessage" class="message"></div>
+    <form id="registerForm">
+      <div class="field-container">
+        <div class="icon icon-phone">
+          <i class="fas fa-phone"></i>
+        </div>
+        <input type="tel" id="registerPhone" placeholder="Введите номер телефона" required>
+      </div>
+      
+      <div class="field-container">
+        <div class="icon icon-key">
+          <i class="fas fa-key"></i>
+        </div>
+        <input type="password" id="registerPassword" placeholder="Введите пароль" required>
+      </div>
+      
+      <div class="field-container">
+        <div class="icon icon-key">
+          <i class="fas fa-key"></i>
+        </div>
+        <input type="password" id="registerConfirmPassword" placeholder="Повторите пароль" required>
+      </div>
+      
+      <input type="text" id="registerFirstName" placeholder="Введите имя" required>
+      <input type="text" id="registerLastName" placeholder="Введите фамилию" required>
+      
+      <!-- Выбор роли -->
+      <div class="field-container">
+        <div class="icon icon-key">
+          <i class="fas fa-user-tag"></i>
+        </div>
+        <select id="registerRole">
+          <option value="user">Обычный пользователь</option>
+          <option value="admin">Администратор</option>
+        </select>
+      </div>
+      
+      <!-- Поле для пароля админа (скрыто по умолчанию) -->
+      <div class="field-container" id="adminPasswordField" style="display: none;">
+        <div class="icon icon-key">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <input type="password" id="adminPassword" placeholder="Секретный код администратора">
+      </div>
+      
+      <button type="submit" class="btn">Зарегистрироваться</button>
+    </form>
+    
+    
+    <!-- Настройки админа (только если система пуста) -->
+    <div id="adminSetupBlock" class="admin-setup" style="display: none;">
+      <h3>👑 Настройка администратора</h3>
+      <p>Система пуста. Создайте первого администратора:</p>
+      <p><strong>Секретный код для администратора:</strong> <code id="adminSecretCode">admin123</code></p>
+      <button id="setupAdminBtn" class="setup-btn">Создать администратора</button>
+    </div>
+    
+    <div class="switch">
+      У вас уже есть аккаунт? <a href="#" id="showLoginLink">Войдите в него</a>
+    </div>
+  </div>
+
+  <!-- Блок входа (изначально скрыт) -->
+  <div class="block" id="loginBlock" style="display: none;">
+    <h2>Вход</h2>
+    <div id="loginMessage" class="message"></div>
+    <form id="loginForm">
+      <div class="field-container">
+        <div class="icon icon-phone">
+          <i class="fas fa-phone"></i>
+        </div>
+        <input type="tel" id="loginPhone" placeholder="Введите номер телефона" required>
+      </div>
+      
+      <div class="field-container">
+        <div class="icon icon-key">
+          <i class="fas fa-key"></i>
+        </div>
+        <input type="password" id="loginPassword" placeholder="Введите пароль" required>
+      </div>
+      
+      <button type="submit" class="btn">Войти</button>
+    </form>
+    <div class="switch">
+      Нет аккаунта? <a href="#" id="showRegisterLink">Зарегистрируйтесь</a>
+    </div>
+  </div>
+
+  <script>
+    // ============ НАСТРОЙКИ АДМИНА ============
+    
+    // Секретный код для регистрации нового админа - ПОСТОЯННЫЙ КЛЮЧ
+    let ADMIN_SECRET_CODE = "admin123";
+
+    // Если у тебя уже есть админ, укажи его телефон здесь:
+    let ADMIN_PHONE = ""; // Оставь пустым, если хочешь создать нового
+    let ADMIN_PASSWORD = "admin123"; // Пароль для админа
+
+    // ============ ПЕРЕКЛЮЧЕНИЕ МЕЖДУ РЕГИСТРАЦИЕЙ И ВХОДОМ ============
+    
+    document.getElementById('showLoginLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('registerBlock').style.display = 'none';
+      document.getElementById('loginBlock').style.display = 'flex';
+    });
+
+    document.getElementById('showRegisterLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('loginBlock').style.display = 'none';
+      document.getElementById('registerBlock').style.display = 'flex';
+    });
+
+    // Показ/скрытие поля для пароля админа
+    document.getElementById('registerRole').addEventListener('change', function() {
+      const adminPasswordField = document.getElementById('adminPasswordField');
+      if (this.value === 'admin') {
+        adminPasswordField.style.display = 'flex';
+      } else {
+        adminPasswordField.style.display = 'none';
+      }
+    });
+
+    // ============ ФУНКЦИИ ДЛЯ РАБОТЫ С LocalStorage ============
+    
+    function getUsers() {
+      const usersJson = localStorage.getItem('beautySalonUsers');
+      return usersJson ? JSON.parse(usersJson) : [];
+    }
+
+    function saveUser(user) {
+      const users = getUsers();
+      users.push(user);
+      localStorage.setItem('beautySalonUsers', JSON.stringify(users));
+    }
+
+    function updateUser(updatedUser) {
+      const users = getUsers();
+      const userIndex = users.findIndex(u => u.id === updatedUser.id);
+      if (userIndex !== -1) {
+        users[userIndex] = updatedUser;
+        localStorage.setItem('beautySalonUsers', JSON.stringify(users));
+      }
+    }
+
+    function findUserByPhone(phone) {
+      const users = getUsers();
+      return users.find(user => user.phone === phone);
+    }
+
+    function setCurrentUser(user) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+    }
+
+    function getCurrentUser() {
+      const userJson = localStorage.getItem('currentUser');
+      return userJson ? JSON.parse(userJson) : null;
+    }
+
+    // ============ ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ ============
+    
+    function initializeSystem() {
+      const users = getUsers();
+      const adminSetupBlock = document.getElementById('adminSetupBlock');
+      
+      // Если нет пользователей, показываем блок настройки админа
+      if (users.length === 0) {
+        console.log('Система пуста. Показываем настройки администратора.');
+        adminSetupBlock.style.display = 'block';
+        
+        // Устанавливаем постоянный ключ
+        document.getElementById('adminSecretCode').textContent = ADMIN_SECRET_CODE;
+        
+        // Если у тебя уже есть админ, спросим телефон
+        if (!ADMIN_PHONE) {
+          setTimeout(() => {
+            const userPhone = prompt("Введи свой номер телефона для администратора (например, +375291234567):");
+            if (userPhone) {
+              ADMIN_PHONE = userPhone;
+              alert(`✅ Администратор будет создан!\n\nТелефон: ${ADMIN_PHONE}\nПароль: ${ADMIN_PASSWORD}\n\nЗапомни секретный код для создания новых админов: ${ADMIN_SECRET_CODE}`);
+            }
+          }, 500);
+        }
+      } else {
+        adminSetupBlock.style.display = 'none';
+      }
+    }
+
+    // ============ КНОПКА СОЗДАНИЯ АДМИНА ============
+    
+    document.getElementById('setupAdminBtn').addEventListener('click', function() {
+      let adminPhone = ADMIN_PHONE;
+      
+      // Если телефон не указан, спрашиваем у пользователя
+      if (!adminPhone) {
+        adminPhone = prompt("Введи номер телефона для администратора (например, +375291234567):");
+        if (!adminPhone) {
+          alert("Нужно указать номер телефона!");
+          return;
+        }
+      }
+      
+      // Создаем администратора
+      const adminUser = {
+        id: 1,
+        phone: adminPhone,
+        password: ADMIN_PASSWORD,
+        firstName: "Администратор",
+        lastName: "Системы",
+        role: "admin",
+        registrationDate: new Date().toLocaleDateString('ru-RU'),
+        lastLogin: new Date().toLocaleDateString('ru-RU')
+      };
+      
+      // Сохраняем админа
+      saveUser(adminUser);
+      
+      // Также создаем тестового пользователя
+      const testUser = {
+        id: 2,
+        phone: "+375292222222",
+        password: "user123",
+        firstName: "Тестовый",
+        lastName: "Пользователь",
+        role: "user",
+        registrationDate: new Date().toLocaleDateString('ru-RU'),
+        lastLogin: new Date().toLocaleDateString('ru-RU')
+      };
+      
+      saveUser(testUser);
+      
+      // Создаем начальные данные
+      initializeDefaultData();
+      
+      // Показываем информацию
+      alert(`✅ Администратор создан!\n\nТелефон: ${adminPhone}\nПароль: ${ADMIN_PASSWORD}\n\nТестовый пользователь:\nТелефон: +375292222222\nПароль: user123\n\n✅ Секретный код для создания новых админов: ${ADMIN_SECRET_CODE}\n(этот код всегда один и тот же!)`);
+      
+      // Прячем блок настройки
+      document.getElementById('adminSetupBlock').style.display = 'none';
+      
+      // Переключаем на форму входа
+      document.getElementById('registerBlock').style.display = 'none';
+      document.getElementById('loginBlock').style.display = 'flex';
+      
+      // Автоматически заполняем телефон админа
+      document.getElementById('loginPhone').value = adminPhone;
+    });
+
+    // Создание начальных данных
+    function initializeDefaultData() {
+      // Создаем начальные отзывы
+      const defaultReviews = {
+        'Ресницы': [
+          {
+            id: 1,
+            userId: 2,
+            userName: "Тестовый Пользователь",
+            isDefault: true,
+            text: "Отличная процедура! Ресницы выглядят потрясающе.",
+            rating: 5,
+            date: "15.06.2024",
+            images: ['images/22.jpg', 'images/23.jpg']
+          }
+        ],
+        'Брови': [
+          {
+            id: 2,
+            userId: 2,
+            userName: "Тестовый Пользователь",
+            isDefault: true,
+            text: "Брови стали идеальной формы. Очень доволен результатом!",
+            rating: 5,
+            date: "10.06.2024",
+            images: ['images/28.jpg', 'images/29.jpg', 'images/30.jpg']
+          }
+        ],
+        'Скайсы': [
+          {
+            id: 3,
+            userId: 2,
+            userName: "Тестовый Пользователь",
+            isDefault: true,
+            text: "Скайсы добавили изюминку моей улыбке. Рекомендую!",
+            rating: 5,
+            date: "05.06.2024",
+            images: ['images/37.jpg']
+          }
+        ]
+      };
+      
+      localStorage.setItem('beautySalonAllReviews', JSON.stringify(defaultReviews));
+      
+    }
+
+    // ============ ФУНКЦИЯ ДЛЯ ПОКАЗА СООБЩЕНИЙ ============
+    
+    function showMessage(elementId, text, type) {
+      const element = document.getElementById(elementId);
+      element.textContent = text;
+      element.className = 'message ' + type;
+      element.style.display = 'block';
+      
+      setTimeout(() => {
+        element.style.display = 'none';
+      }, 5000);
+    }
+
+    // ============ ФОРМА РЕГИСТРАЦИИ ============
+    
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const phone = document.getElementById('registerPhone').value;
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('registerConfirmPassword').value;
+      const firstName = document.getElementById('registerFirstName').value;
+      const lastName = document.getElementById('registerLastName').value;
+      const role = document.getElementById('registerRole').value;
+      const adminPassword = document.getElementById('adminPassword').value;
+      
+      // Валидация
+      if (password !== confirmPassword) {
+        showMessage('registerMessage', 'Пароли не совпадают!', 'error');
+        return;
+      }
+      
+      if (phone.length < 10) {
+        showMessage('registerMessage', 'Введите корректный номер телефона!', 'error');
+        return;
+      }
+      
+      // Проверка существующего пользователя
+      if (findUserByPhone(phone)) {
+        showMessage('registerMessage', 'Пользователь с таким номером уже существует!', 'error');
+        return;
+      }
+      
+      // Проверка для регистрации админа
+      if (role === 'admin') {
+        if (adminPassword !== ADMIN_SECRET_CODE) {
+          showMessage('registerMessage', 'Неверный секретный код администратора! Используйте: admin123', 'error');
+          return;
+        }
+      }
+      
+      // Создание пользователя
+      const newUser = {
+        id: Date.now(),
+        phone: phone,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        role: role,
+        registrationDate: new Date().toLocaleDateString('ru-RU'),
+        lastLogin: new Date().toLocaleDateString('ru-RU')
+      };
+      
+      // Сохраняем пользователя
+      saveUser(newUser);
+      
+      // Сохраняем текущего пользователя
+      setCurrentUser(newUser);
+      
+      // Показываем успешное сообщение
+      const roleText = role === 'admin' ? 'администратора' : 'пользователя';
+      showMessage('registerMessage', `Регистрация ${roleText} успешна! Перенаправляем...`, 'success');
+      
+      // Через 2 секунды перенаправляем
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 2000);
+    });
+
+    // ============ ФОРМА ВХОДА ============
+    
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const phone = document.getElementById('loginPhone').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      const user = findUserByPhone(phone);
+      
+      if (!user) {
+        showMessage('loginMessage', 'Пользователь не найден!', 'error');
+        return;
+      }
+      
+      if (user.password !== password) {
+        showMessage('loginMessage', 'Неверный пароль!', 'error');
+        return;
+      }
+      
+      // Обновляем время последнего входа
+      user.lastLogin = new Date().toLocaleDateString('ru-RU');
+      updateUser(user);
+      
+      // Сохраняем текущего пользователя
+      setCurrentUser(user);
+      
+      // Показываем успешное сообщение
+      const roleText = user.role === 'admin' ? 'администратора' : 'пользователя';
+      showMessage('loginMessage', `Вход успешен (${roleText})! Перенаправляем...`, 'success');
+      
+      // Через 2 секунды перенаправляем
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 2000);
+    });
+
+    // ============ ПРОВЕРКА, ЕСЛИ ПОЛЬЗОВАТЕЛЬ УЖЕ ВОШЕЛ ============
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('=== Инициализация системы регистрации/входа ===');
+      
+      // Инициализируем систему
+      initializeSystem();
+      
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        // Если пользователь уже вошел, перенаправляем
+        window.location.href = 'kabinet.html';
+      }
+    });
+  </script>
+</body>
+</html>
